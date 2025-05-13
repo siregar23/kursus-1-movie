@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Movie</title>
+</head>
+<body>
+    <a href="index.html">Kembali</a>
+
+    <div>
+        <h1>Selamat datang di detail movie</h1>
+    </div>
+    <div id="movie">
+        <h2>Loading ....</h2>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(document.location.search);
+        // console.log(url.get("nomor"));
+        const movieId = urlParams.get("id")
+
+        const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US&page=1`;
+        const options = {
+            method: 'GET',
+                headers: {
+                    accept: 'application/json',
+                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNmFhNmFhOWQ4MTJmZDg2YmRiYjYzYTdlYzQ3NzY3ZiIsIm5iZiI6MTc0Njc5Nzg0OS44ODUsInN1YiI6IjY4MWUwNTE5NDdlZGYzMGY1NzNlY2RjOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.K4HDFT03Ud2CFw9VqmazfLc1Rz8Hf3IdoINTeqyt29Y'
+            }
+        };
+
+        const pathImage = "https://image.tmdb.org/t/p/w500"
+
+        async function getMovie() {
+            const response = await fetch(url, options);
+            const movies = await response.json();
+            console.log(movies);
+            document.getElementById("movie").innerHTML = 
+            `
+            <div id="movie">
+                <img width="200px" src="${pathImage}${movies.poster_path}" alt="">
+                <h1>${movies.original_title}</h1>
+                <p>${movies.overview}</p>
+            </div>
+
+
+            `
+        
+        }
+        
+        // fetch(url, options)
+        // .then(res => res.json())
+        // .then(json => console.log(json))
+        // .catch(err => console.error(err));
+            getMovie()
+
+
+
+    </script>
+</body>
+</html>

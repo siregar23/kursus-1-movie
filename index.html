@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie</title>
+    <style>
+        #list-movie {
+            display: flex;
+            width: 100%;
+            margin: 20px;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        #movie {
+            width: 200px;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgb(75, 73, 73);
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+<body>
+    
+    <div id="list-movie">
+        <div id="movie">
+            <img src="" alt="">
+            <a href="#">Title</a>
+            <p>Arti</p>
+        </div>
+    </div>
+
+    <script>
+        const url = 'https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1';
+        const options = {
+            method: 'GET',
+                headers: {
+                    accept: 'application/json',
+                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNmFhNmFhOWQ4MTJmZDg2YmRiYjYzYTdlYzQ3NzY3ZiIsIm5iZiI6MTc0Njc5Nzg0OS44ODUsInN1YiI6IjY4MWUwNTE5NDdlZGYzMGY1NzNlY2RjOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.K4HDFT03Ud2CFw9VqmazfLc1Rz8Hf3IdoINTeqyt29Y'
+            }
+        };
+        const pathImage = "https://image.tmdb.org/t/p/w500"
+
+        function redirectToDetail(movieId){
+            window.location.href = `detail-movie.html?id=${movieId}`
+
+
+        }
+        
+        async function getMovie(movieId) {
+            const response = await fetch(url, options);
+            const movies = await response.json();
+            console.log(movies.results);
+        
+        document.getElementById("list-movie").innerHTML = ''
+        for(let item of movies.results) {
+            // console.log(item)
+            document.getElementById("list-movie").innerHTML +=
+            `
+                <div id="movie" onclick='redirectToDetail(${item.id})'>
+                    <img width="100%" src="${pathImage}${item.poster_path}" alt="">
+                    <div>
+                    <a href="detail-movie.html?id=${item.id}">${item.title}</a>
+                    <p>${item.overview}</p>
+                    </div>
+                </div>
+            `
+            }
+        }
+        
+        // fetch(url, options)
+        // .then(res => res.json())
+        // .then(json => console.log(json))
+        // .catch(err => console.error(err));
+            getMovie()
+    </script>
+</body>
+</html>
